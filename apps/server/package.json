@@ -1,0 +1,6 @@
+{
+	"name": "python-server",
+	"scripts": {
+		"dev": "bash ./run.sh"
+	}
+}

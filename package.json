@@ -1,0 +1,19 @@
+{
+	"name": "11labs-audio",
+	"version": "1.0.0",
+	"description": "",
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	],
+	"scripts": {
+		"build": "turbo run build",
+		"dev": "turbo run dev",
+		"lint": "turbo run lint",
+		"format": "prettier --write \"**/*.{ts,svelte}\""
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"packageManager": "pnpm@8.3.1"
+}

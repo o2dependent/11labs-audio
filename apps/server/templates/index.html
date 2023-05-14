@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible"
+		content="IE=edge">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0">
+	<script defer
+		src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+	<title>Document</title>
+</head>
+
+<body>
+	<h1>Audio API</h1>
+	<form x-data="{
+		text: '',
+
+	}">
+		<textarea x-bind </form>
+	<script>
+		fetch('/api/audio/hello')
+			.then(response => response.blob())
+			.then(blob => {
+				// Create a new <audio> element
+				const audioElement = document.createElement('audio');
+
+				// Create a URL object from the blob
+				const audioURL = URL.createObjectURL(blob);
+
+				// Set the audio source to the URL
+				audioElement.src = audioURL;
+
+				// Append the audio element to the document body or any desired container
+				document.body.appendChild(audioElement);
+
+				// add play button
+				const playButton = document.createElement('button');
+				playButton.innerText = 'Play';
+				playButton.addEventListener('click', () => {
+					audioElement.play();
+				});
+				document.body.appendChild(playButton);
+
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
+	</script>
+</body>
+
+</html>
