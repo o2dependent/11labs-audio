@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, jsonify, send_file
+from flask_cors import CORS
 from elevenlabs import generate  # , play
 from io import BytesIO
 
 app = Flask(__name__)
+CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True, allow_headers=['Content-Type'])
 
 @app.route("/")
 def hello_world():
