@@ -1,0 +1,24 @@
+{
+	"name": "extension-content-ui",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"files": [
+		"dist/*"
+	],
+	"main": "dist/extension-content-ui.umd.cjs",
+	"scripts": {
+		"dev": "vite build --watch",
+		"build": "tsc --declaration && vite build",
+		"preview": "vite preview"
+	},
+	"dependencies": {
+		"lit": "^2.6.1"
+	},
+	"devDependencies": {
+		"@types/chrome": "^0.0.235",
+		"@webcomponents/webcomponentsjs": "^2.8.0",
+		"typescript": "^5.0.2",
+		"vite": "^4.3.2"
+	}
+}
