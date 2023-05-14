@@ -1,5 +1,5 @@
 {
-	"name": "python-server",
+	"name": "server",
 	"scripts": {
 		"dev": "bash ./run.sh"
 	}
