@@ -8,11 +8,13 @@ const config = {
 		rollupOptions: {
 			input: {
 				contentScript: path.resolve(__dirname, 'src/contentScript.ts')
+			},
+			output: {
+				file: path.resolve(__dirname, 'build/contentScript.js')
 			}
 		}
 	},
 	plugins: [
-		sveltekit(),
 		{
 			name: 'manifest',
 			apply: 'build',
@@ -36,7 +38,8 @@ const config = {
 				// write the new manifest.json object as manifest.json in the build folder
 				fs.writeFileSync(path.resolve(__dirname, 'static/manifest.json'), JSON.stringify(manifest));
 			}
-		}
+		},
+		sveltekit()
 	]
 };
 

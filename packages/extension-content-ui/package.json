@@ -9,6 +9,7 @@
 	"main": "dist/extension-content-ui.umd.cjs",
 	"scripts": {
 		"dev": "vite build --watch",
+		"packages:dev": "vite dev",
 		"build": "tsc --declaration && vite build",
 		"preview": "vite preview"
 	},
@@ -18,6 +19,8 @@
 	"devDependencies": {
 		"@types/chrome": "^0.0.235",
 		"@webcomponents/webcomponentsjs": "^2.8.0",
+		"stylelint": "^15.6.1",
+		"stylelint-config-standard": "^33.0.0",
 		"typescript": "^5.0.2",
 		"vite": "^4.3.2"
 	}

@@ -10,7 +10,8 @@
 		"build": "turbo run build",
 		"dev": "turbo run dev",
 		"lint": "turbo run lint",
-		"format": "prettier --write \"**/*.{ts,svelte}\""
+		"format": "prettier --write \"**/*.{ts,svelte}\"",
+		"packages:dev": "turbo run packages:dev --filter extension-content-ui"
 	},
 	"keywords": [],
 	"author": "",
