@@ -10,11 +10,16 @@ import { customElement, state } from "lit/decorators.js";
 export class DraggableWindow extends LitElement {
 	constructor() {
 		super();
-		chrome?.storage?.local?.get?.("coords", (coords) => {
-			this._coords = coords.coords || { x: 0, y: 0 };
+		chrome?.storage?.local?.get?.("eo-window-coords", (coords) => {
+			this._coords = coords.coords || {
+				x: 0,
+				y: window.innerHeight - this._containerHeight,
+			};
 		});
 		document.addEventListener("mousemove", this._onMouseMove);
 	}
+
+	private _containerHeight = 120;
 
 	@state()
 	private _dragging = false;
@@ -26,7 +31,7 @@ export class DraggableWindow extends LitElement {
 	private _offsetY = 0;
 
 	@state()
-	private _coords = { x: 0, y: 0 };
+	private _coords = { x: 0, y: window.innerHeight - this._containerHeight };
 
 	private _onMouseDown = (e: MouseEvent) => {
 		const { clientY } = e;
@@ -34,7 +39,6 @@ export class DraggableWindow extends LitElement {
 		// set timeout in case the user is just opening the window and not dragging
 		const timeout = setTimeout(() => {
 			this._dragging = true;
-			this._coords = { x: 0, y: e.clientY };
 			window.removeEventListener("mouseup", clear);
 			window.addEventListener("mouseup", this._onMouseUp);
 		}, 250);
@@ -44,7 +48,7 @@ export class DraggableWindow extends LitElement {
 
 	private _onMouseUp = () => {
 		this._dragging = false;
-		chrome.storage.local.set({ coords: this._coords });
+		chrome?.storage?.local?.set?.({ "eo-window-coords": this._coords });
 		window.removeEventListener("mouseup", this._onMouseUp);
 	};
 
@@ -52,7 +56,8 @@ export class DraggableWindow extends LitElement {
 		if (this._dragging) {
 			let y = e.clientY - this._offsetY;
 			if (y < 0) y = 0;
-			if (y > window.innerHeight - 90) y = window.innerHeight - 90;
+			if (y > window.innerHeight - this._containerHeight)
+				y = window.innerHeight - this._containerHeight;
 			this._coords = { x: 0, y };
 		}
 	};
@@ -66,9 +71,8 @@ export class DraggableWindow extends LitElement {
 		return html`
 			<div
 				id="draggable-container"
-				class="${this._open ? "open" : ""}"
-				style="top: ${this._coords.y}px; right: ${this._coords
-					.x}px; transition: all ${this._dragging ? "0s" : "0.5s"} ease-in-out;"
+				class="${this._open ? "open" : ""} ${this._dragging ? "dragging" : ""}"
+				style="top: ${this._coords.y}px; right: ${this._coords.x}px;"
 			>
 				<button
 					id="draggable-handle"
@@ -100,29 +104,62 @@ export class DraggableWindow extends LitElement {
 
 	static styles = css`
 		#draggable-container {
-			--bg: #000;
+			--bg: #212121;
+			--border-color: #515151;
 			--content-width: 20rem;
 			--handle-width: 2rem;
+			color: #fafafa;
 			position: fixed;
 			z-index: 999999;
 			display: grid;
+			justify-content: center;
+			align-items: center;
 			grid-template-columns: var(--handle-width) var(--content-width);
 			transform: translateX(var(--content-width));
+			transition: all 0.5s ease-in-out;
+			filter: drop-shadow(0rem 0rem 0.125rem #00000063);
 		}
-		#draggable-container.open {
+		#draggable-container svg {
+			transform: rotate(0deg);
+			transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+		}
+		#draggable-container.open,
+		#draggable-container #draggable-content:focus-within {
 			transform: translateX(0);
 		}
+		#draggable-container.open svg {
+			transform: rotate(180deg);
+		}
+		#draggable-container.dragging {
+			transition: all 0s ease-in-out;
+		}
 		#draggable-handle {
+			height: 100%;
+			cursor: pointer;
 			display: flex;
 			justify-content: center;
 			align-items: center;
 			background-color: var(--bg);
 			border: none;
-			color: #fff;
-			border-radius: 25rem 0 0 25rem;
+			border-radius: 0.5rem 0 0 0.5rem;
+			transition: all 0.5s ease-in-out;
+			border: 1px solid var(--border-color);
+			border-right: none;
+			transform: translateX(1px);
+		}
+		.dragging #draggable-handle {
+			cursor: grabbing;
 		}
 		#draggable-content {
+			padding: 0.25rem 0.5rem;
+			border: 1px solid var(--border-color);
+			border-right: none;
 			background-color: var(--bg);
 		}
 	`;
+}
+declare global {
+	interface HTMLElementTagNameMap {
+		"eo-draggable-window": DraggableWindow;
+	}
 }

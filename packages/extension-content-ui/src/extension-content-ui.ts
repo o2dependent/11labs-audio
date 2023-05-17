@@ -1,6 +1,8 @@
 import { LitElement, html } from "lit";
 import { customElement } from "lit/decorators.js";
 import "./elements/draggable-window";
+import "./elements/extension-popup";
+import "./elements/audio-player";
 
 /**
  * An example element.
@@ -13,8 +15,9 @@ export class ExtensionContentUI extends LitElement {
 	render() {
 		return html`
 			<eo-draggable-window>
-				<slot></slot>
+				<eo-audio-player></eo-audio-player>
 			</eo-draggable-window>
+			<eo-extension-popup></eo-extension-popup>
 		`;
 	}
 }
